@@ -1,0 +1,33 @@
+task create setup
+task add setup "mkdir -p demo_dir"
+task add setup "touch demo_dir/data.txt"
+task add setup "echo Setup complete"
+task show setup
+task run setup
+task replay setup
+task create flaky
+task add flaky "echo before"
+task add flaky "ls /nonexistent_folder" --retry 2
+task add flaky "echo after"
+task run flaky
+task create slow
+task add slow "sleep 10" --timeout 2
+task run slow
+task create pipeline
+task add pipeline "echo 3 package" --id package --after test
+task add pipeline "echo 2 test" --id test --after compile
+task add pipeline "echo 1 compile" --id compile
+task show pipeline
+task run pipeline
+task create loop
+task add loop "echo A" --id a --after b
+task add loop "echo B" --id b --after a
+task run loop
+task create skipdemo
+task add skipdemo "ls /nonexistent_folder" --id fetch --continue
+task add skipdemo "echo process data" --id process --after fetch
+task add skipdemo "echo independent step" --id other
+task run skipdemo
+task history
+task list
+exit

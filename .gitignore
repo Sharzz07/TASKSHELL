@@ -1,0 +1,9 @@
+taskshell
+taskshell_build
+tasks/
+logs/
+state/
+big.txt
+sorted.txt
+release.tgz
+demo_dir/

@@ -1,0 +1,24 @@
+task create release
+task add release "gcc -O2 -Wall taskshell.c -o taskshell_build" --id build
+task add release "sh smoke.sh" --id smoke --after build
+task add release "tar czf release.tgz taskshell_build taskshell.c" --id package --after smoke
+task run release
+task create dataset
+task add dataset "sh gen.sh" --id gen
+task add dataset "sort -n -o sorted.txt big.txt" --id sort --after gen
+task run dataset
+task create hog
+task add hog "sh hog.sh" --cpu 1
+task run hog
+task create hang
+task add hang "sh hang.sh" --timeout 2
+task run hang
+sleep 2
+pgrep -l sleep
+task create brokenrelease
+task add brokenrelease "gcc -Wall broken.c -o broken_build" --id build
+task add brokenrelease "echo smoke test" --id smoke --after build
+task add brokenrelease "echo package" --id package --after smoke
+task run brokenrelease
+task history
+exit
